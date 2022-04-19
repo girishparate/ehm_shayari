@@ -1,0 +1,190 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block body %}
+
+    <!-- carousel -->
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+        </div>
+
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static 'img/hero1.jpg' %}" height="440" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'img/hero2.jpg' %}" height="440" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'img/hero3.jpg' %}" height="440" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'img/hero4.jpg' %}" height="440" class="d-block w-100" alt="...">
+            </div>
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon icon" aria-hidden="true" style="width: 20px;"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon icon" aria-hidden="true" style="width: 20px;"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <!-- /.carousel -->
+
+    <main class="container pt-5">
+
+        <!-- Section 1 -->
+        <div class="row">
+            {% for post in trends|slice:":2" %}
+            <div class="col-md-6">
+                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col-auto d-none d-lg-block">
+                        <img src="{{ post.thumbnail.url }}" class="bd-placeholder-img" width="200" height="250" >
+                    </div>
+                    <div class="col px-4 py-3 d-flex flex-column position-static">
+                        <a href="{% url 'post' post.id post.slug %}">
+                            <h4 class="text-secondary text-secondary-hover mb-0">{{post.title}}</h4>
+                        </a>
+                        <div class="mb-1 text-muted" style="font-weight: 600;">{{ post.time_upload|date:"D, d F, Y" }}</div>
+                        <p class="card-text">{{ post.overview|slice:":120" }}...</p>
+                        <a href="{% url 'post' post.id post.slug %}" class="" style="font-weight: 600;">Read More</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <!-- /.Section 1 -->
+
+        <div class="row justify-content-center">
+
+            <!-- Col-lg-8 -->
+            <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+
+                <!-- Card One -->
+                {% for post in posts|slice:"0:1" %}
+                <div class="card shadow-sm border-0">
+                    <img src="{{ post.thumbnail.url }}" class="img-fluid">
+                    <div class="p-4 text-center">
+                        <a href="{% url 'post' post.id post.slug %}">
+                            <h4 class="text-secondary text-secondary-hover mb-0">{{post.title}}</h4>
+                        </a>
+                        <div class="mb-1 text-muted" style="font-weight: 600;">{{ post.time_upload|date:"D, d F, Y" }}</div>
+                        <p class="card-text">{{ post.overview|slice:":120" }}...</p>
+                        <a href="{% url 'post' post.id post.slug %}" class="" style="font-weight: 600;">Read More</a>
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- /.Card One -->
+
+                <!-- Row One -->
+                <div class="row py-5">
+
+                    {% for post in posts %}
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 p-2">
+                        <div class="card shadow-sm border-0">
+                            <img src="{{post.thumbnail.url}}" class="bd-placeholder-img card-img-top img-fluid">
+                            <div class="card-body pt-2">
+                                <a href="{% url 'post' post.id post.slug %}">
+                                    <h4 class="text-secondary text-secondary-hover mb-1">{{post.title}}</h4>
+                                </a>
+                                <p class="card-text">{{ post.overview|slice:":120" }}...</p>
+                                <p class="card-text"><small class="text-muted">{{ post.time_upload|date:"D, d F, Y" }}</small></p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <!-- Pagination-->
+                    <ul class="pagination justify-content-center mt-5">
+                        {% if posts.has_previous %}
+                            <li class="page-item p-1">
+                                <a class="page-link text-secondary px-4" href="?page={{ posts.previous_page_number}}">
+                                    <span aria-hidden="true">«</span>
+                                </a>
+                            </li>  
+                        {% endif %}
+
+                        {% for num in posts.paginator.page_range %}                     
+                            {% if posts.number == num %}
+
+                                <li class="page-item p-1">
+                                    <a class="page-link text-white bg-secondary" href="#">{{ num }}</a>
+                                </li>
+
+                                {% elif num > posts.number|add:'-4' and num < posts.number|add:'4' %}
+
+                                <li class="page-item p-1"><a class="page-link text-secondary " href="?page={{ num }}">{{ num }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if posts.has_next %}
+                        <li class="page-item p-1">
+                            <a class="page-link text-secondary px-4" href="?page={{ posts.next_page_number }}">
+                                <span aria-hidden="true">»</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    <!-- /.Pagination -->
+                </div>
+                <!-- /.Row One -->
+            </div>
+            <!-- /.Col-lg-8 -->
+
+            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+
+                <div class="px-3 pt-3">
+                    <img src="{% static 'img/about.jpg' %}" class="img-fluid rounded">
+                </div>
+
+                <div class="p-4 mb-3 bg-light rounded">
+                    <h4 class="fst-italic text-secondary">About Us</h4>
+                    <p class="mb-0">We have share English, Hindi and Marathi Shayari / Mind Thought / Poem etc.  #Shayari #Mind Thought #Love Poem #Love Shayari #Marathi Kavita #Hindi Kavita/Poem #Life Shayari #Best Shayari</p>
+                    <p><a href="mailto:shayarikebaat@gmail.com">Contact Us</a></p>
+                </div>
+
+                <!-- Trending Posts -->
+                <div class="p-4">
+                    <h4 class="fst-italic text-secondary mb-4">Trending Posts</h4>
+
+                    {% for post in trends %}
+                    <div class="card shadow-sm border-0 my-3">
+                        <div class="row m-0 p-0">
+                            <div class="col-4 p-0">
+                                <img src="{{post.thumbnail.url}}" class="img-fluid rounded" style="height: 120px;">
+                            </div>
+                            <div class="col-8 px-3 pt-3 pb-2">
+                                <a href="{% url 'post' post.id post.slug %}">
+                                    <h5 class="text-secondary text-secondary-hover mb-1" style="font-size: 18px;">{{post.title}}</h5>
+                                </a>
+                                <div class="mb-1 text-muted" style="font-weight: 600; font-size: 12px;">{{ post.time_upload|date:"D, d F, Y" }}</div>
+                                <p class="card-text" style="font-size: 14px;">{{ post.overview|slice:":35" }}...</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+ 
+                </div>
+                <!-- /.Trending Posts -->
+
+                <div class="px-3 pt-3">
+                    <img src="{% static 'img/categorie.jpg' %}" class="img-fluid rounded">
+                </div>
+
+                <div class="p-4">
+			         <h4 class="fst-italic mb-3">Categories</h4>
+		        </div>
+	        </div>
+	    </div>
+        
+    </main>
+
+{% endblock body %}

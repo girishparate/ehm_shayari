@@ -1,0 +1,59 @@
+a {
+    text-decoration: none !important;
+}
+
+a, p, h1, h2, h3, h4, h5 {
+    font-family: 'Roboto Slab', serif !important;
+    letter-spacing: 1px;
+}
+
+.navbar-brand {
+    font-family: 'Kaushan Script', cursive !important;
+    font-size: 30px;
+    letter-spacing: 2px;
+    font-weight: 600;
+}
+
+.navbar-toggler {
+    box-shadow: none !important;
+}
+
+.carousel-indicators button {
+    width: 6px !important;
+    height: 5px !important;
+    border-radius: 50% !important; 
+    margin-bottom: -10px;
+}
+
+.text-primary {
+    color: #5e72e4 !important;
+}
+.text-primary-hover:hover {
+    color: #000 !important;
+}
+
+.text-secondary {
+    color: #f4952f !important;
+}
+.text-secondary-hover:hover {
+    color: #000 !important;
+}
+
+
+.bg-primary {
+    background-color: #5e72e4 !important;
+}
+
+.bg-secondary {
+    background-color: #f4952f !important;
+}
+
+
+.page-link { 
+    margin: 2px;
+    font-weight: 600;
+    outline: none !important;
+    padding: 6px 14px 8px 14px;
+    box-shadow: none !important;
+    border-radius: 3px !important;
+}
